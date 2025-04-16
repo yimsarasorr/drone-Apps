@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drone Dashboard</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/src/styles/main.css" />
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3">
+    <a class="navbar-brand" href="#">Drone Dashboard</a>
+    <div class="navbar-nav">
+      <a class="nav-link active" href="#" onclick="showPage('config')">View Config</a>
+      <a class="nav-link" href="#" onclick="showPage('form')">Temperature Log Form</a>
+      <a class="nav-link" href="#" onclick="showPage('logs')">View Logs</a>
+    </div>
+  </nav>
+
+  <main class="container py-4">
+    <div id="page-config"></div>
+    <div id="page-form" class="d-none"></div>
+    <div id="page-logs" class="d-none"></div>
+  </main>
+
+  <script type="module">
+    import { loadConfig } from '/src/js/config.js';
+    import { setupForm } from '/src/js/form.js';
+    import { loadLogs } from '/src/js/logs.js';
+
+    window.showPage = async function(page) {
+      document.querySelectorAll('main > div').forEach(div => div.classList.add('d-none'));
+      document.getElementById(`page-${page}`).classList.remove('d-none');
+
+      if (page === 'config') await loadConfig();
+      if (page === 'form') await setupForm();
+      if (page === 'logs') await loadLogs();
+    }
+
+    // Default page
+    showPage('config');
+  </script>
+</body>
+</html>
